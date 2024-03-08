@@ -13,14 +13,18 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.0",
     "@mui/material": "^5.15.0",
+    "@mui/x-date-pickers": "^6.19.0",
     "@thirdweb-dev/react": "^4.1.16",
     "@thirdweb-dev/sdk": "^4.0.22",
+    "dayjs": "^1.11.10",
     "ethers": "5",
+    "luxon": "^3.4.4",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/luxon": "^3.4.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

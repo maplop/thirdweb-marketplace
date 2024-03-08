@@ -9,13 +9,6 @@ const BuyView: React.FC = () => {
 
   const { allNfts, loadingAllNfts, listings, loadingListings, auctions, loadingAuctions, filterSelected, handleFilterSelectedOnChange } = useBuyView()
 
-  console.log("### nfts ###")
-  console.log(JSON.stringify(allNfts))
-  console.log("### listings ###")
-  console.log(JSON.stringify(listings))
-  console.log("### auctions ###")
-  console.log(JSON.stringify(auctions))
-
   return (
     <ContentPage titlePage="Buy NFTs">
       <NFTFilter>
@@ -31,14 +24,14 @@ const BuyView: React.FC = () => {
           onClick={() => handleFilterSelectedOnChange(FilterOptions.LISTINGS)}
           active={filterSelected === FilterOptions.LISTINGS}
         >
-          Listings
+          Direct
         </FilterBtn>
         <FilterBtn
           variant="contained"
           onClick={() => handleFilterSelectedOnChange(FilterOptions.AUCTIONS)}
           active={filterSelected === FilterOptions.AUCTIONS}
         >
-          Auctions
+          Auction
         </FilterBtn>
       </NFTFilter>
       <NFTList
@@ -49,9 +42,7 @@ const BuyView: React.FC = () => {
         auctions={auctions}
         loadingAuctions={loadingAuctions}
         filterSelected={filterSelected}
-        emptyText={
-          "Looks like there are no NFTs in this collection. Did you import your contract on the thirdweb dashboard? https://thirdweb.com/dashboard"
-        }
+        emptyText={"Oops! It seems there are no NFTs at the moment :("}
       />
     </ContentPage>
   )

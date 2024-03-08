@@ -1,6 +1,6 @@
 'use client'
 
-import { AppBar, Box, Container, Tooltip, styled } from "@mui/material"
+import { AppBar, Box, Container, Tooltip, Typography, styled } from "@mui/material"
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react"
 import { AccountCircle } from "@mui/icons-material"
 import { routes } from "@/routes"
@@ -15,17 +15,14 @@ const Navbar: React.FC = () => {
   return (
     <Nav position="sticky">
       <Wrapper maxWidth='md'>
-        <LogoMenuWrapper>
+        <NameMenuWrapper>
           <CustomLink href={'/'}>
-            <LogoWrapper >
-              <CustomImage
-                src="/images/marketplace-logo.png"
-                alt="market-place-logo"
-              />
-            </LogoWrapper>
+            <NameWrapper >
+              <WebsiteName>ArtBitX</WebsiteName>
+            </NameWrapper>
           </CustomLink>
           <MenuButton />
-        </LogoMenuWrapper>
+        </NameMenuWrapper>
         <Menu>
           <MenuItem href={routes.buy}>
             BUY
@@ -65,19 +62,26 @@ const Wrapper = styled(Container)(({ theme }) => ({
 
 }))
 
-const LogoMenuWrapper = styled(Box)(({ theme }) => ({
+const NameMenuWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: '6px',
 }))
 
-const LogoWrapper = styled(Box)({
-  position: 'relative',
-  width: '48px',
-  height: '48px',
-  borderRadius: '10px',
-  overflow: 'hidden'
-})
+const NameWrapper = styled(Box)(({ theme }) => ({
+
+  display: 'none',
+
+  [theme.breakpoints.up('sm')]: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '10px',
+    padding: '6px 12px',
+    backgroundColor: theme.palette.primary.main,
+    textDecoration: 'underline',
+  }
+}))
 
 const MenuButton = styled(MenuIcon)(({ theme }) => ({
 
@@ -128,4 +132,11 @@ const ConnectBtn = styled(ConnectWallet)(({ theme }) => ({
   ':hover': {
     background: theme.palette.primary.dark,
   }
+}))
+
+const WebsiteName = styled(Typography)(({ theme }) => ({
+  fontSize: '24px',
+  fontWeight: 600,
+  margin: 0,
+  padding: 0,
 }))

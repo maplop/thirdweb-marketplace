@@ -6,16 +6,20 @@ import Link from "next/link"
 import { MARKETPLACE_ADDRESS, NFT_COLLECTION_ADDRESS } from "@/const/address"
 import CustomLink from "../CustomLink/CustomLink"
 import CustomImage from "../CustomImage/CustomImage"
-import CustomSkeleton from "../CustomSkeleton/CustomSkeleton"
 import { FilterOptions } from "@/app/buy/useBuyView"
 import { useContract, useValidDirectListings, useValidEnglishAuctions } from "@thirdweb-dev/react"
+import { useSellModalContext } from "@/context/SellModalContext"
 
 interface NFTCardProps {
   filterSelected: FilterOptions;
   data: NFT | DirectListingV3 | EnglishAuction
+  showDetails: boolean
 }
 
-const NFTCard: React.FC<NFTCardProps> = ({ filterSelected, data }) => {
+const NFTCard: React.FC<NFTCardProps> = ({ filterSelected, data, showDetails }) => {
+
+  const { handleOpenSellModal } = useSellModalContext()
+
   const isAllSelected = filterSelected === FilterOptions.ALL;
 
   const getID = () => {
@@ -102,21 +106,37 @@ const NFTCard: React.FC<NFTCardProps> = ({ filterSelected, data }) => {
     }
   };
 
+  const handleOpenModal = () => {
+    handleOpenSellModal(getID())
+  }
+
+  const commonContent = (
+    <CardContainer>
+      <CardImgContainer>
+        <CustomImage alt={`${getName()}-img`} src={getImage() ?? ''} />
+      </CardImgContainer>
+      <CardDataContainer>
+        <MainDataContainer>
+          <NFTName>{getName()}</NFTName>
+          <CardText>{getText()}</CardText>
+        </MainDataContainer>
+        <Box>{getPrice()}</Box>
+      </CardDataContainer>
+    </CardContainer>
+  );
+
   return (
-    <CustomLink href={getCardLink()}>
-      <CardContainer>
-        <CardImgContainer>
-          <CustomImage alt={`${getName()}-img`} src={getImage() ?? ''} />
-        </CardImgContainer>
-        <CardDataContainer>
-          <MainDataContainer>
-            <NFTName>{getName()}</NFTName>
-            <CardText>{getText()}</CardText>
-          </MainDataContainer>
-          <Box>{getPrice()}</Box>
-        </CardDataContainer>
-      </CardContainer>
-    </CustomLink>
+    <>
+      {showDetails ? (
+        <CustomLink href={getCardLink()}>
+          {commonContent}
+        </CustomLink>
+      ) : (
+        <Box onClick={handleOpenModal}>
+          {commonContent}
+        </Box>
+      )}
+    </>
   );
 };
 
@@ -130,6 +150,7 @@ const CardContainer = styled(Box)(({ theme }) => ({
   borderRadius: '10px',
   padding: '6px',
   boxShadow: `${theme.palette.secondary.dark} 0px 1px 4px`,
+  cursor: 'pointer'
 }))
 
 const CardImgContainer = styled(Box)(({ theme }) => ({

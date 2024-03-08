@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>NFT Marketplace</title>
+        <title>ArtBitX | NFT Marketplace</title>
       </head>
       <ThemeProvider theme={customTheme}>
         <ThirdwebProvider clientId={process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID} activeChain={NETWORK}>

@@ -1,34 +1,51 @@
 'use client'
 import { Box, Typography, styled, useTheme } from "@mui/material"
-import { useParams } from "next/navigation"
 import ContentPage from "@/app/components/ContentPage/ContentPage"
 import { formatAddress } from "@/utils/formatAddress"
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import NFTList from "@/app/components/NFTList/NFTList"
-import { useContract, useOwnedNFTs } from "@thirdweb-dev/react"
-import { NFT_COLLECTION_ADDRESS } from "@/const/address"
-import { NftURLParams } from "@/types/types"
 import { FilterOptions } from "@/app/buy/useBuyView"
+import useProfile from "./useProfile"
+import CustomLink from "@/app/components/CustomLink/CustomLink"
+import { routes } from "@/routes"
+import NFTsNotFounds from "@/app/components/NFTsNotFound/NFTsNotFound";
 
 const ProfileView: React.FC = () => {
 
-  const { profile } = useParams<NftURLParams>()
-  const { contract } = useContract(NFT_COLLECTION_ADDRESS);
-  const { data: nfts, isLoading: loadingNFTs } = useOwnedNFTs(contract, profile);
+  const theme = useTheme()
+
+  const { address, nfts, loadingNFTs } = useProfile()
 
   return (
     <ContentPage>
       <Cover>
         <Avatar />
       </Cover>
-      <AccountContainer>
-        <AccountAddress>{formatAddress(profile as string)}</AccountAddress>
-        <CopyIcon />
-      </AccountContainer>
-      <Title variant="h5">NFTs Collection</Title>
-      <NFTContainer>
-        <NFTList allNfts={nfts} loadingAllNfts={loadingNFTs} emptyText="no hay nfts" filterSelected={FilterOptions.ALL} />
-      </NFTContainer>
+
+      {address ? (
+        <>
+          <AccountContainer>
+            <AccountAddress>{formatAddress(address as string)}</AccountAddress>
+            <CopyIcon />
+          </AccountContainer>
+          <Title variant="h5">Owned NFTs</Title>
+          <NFTContainer>
+            <NFTList
+              allNfts={nfts}
+              loadingAllNfts={loadingNFTs}
+              emptyText={
+                <span>
+                  Your collection is empty. Explore and{' '}
+                  <CustomLink href={routes.buy}><span style={{ color: theme.palette.secondary.contrastText, textDecoration: 'underline' }}>buy</span></CustomLink> your first NFTs!
+                </span>
+              }
+              filterSelected={FilterOptions.ALL}
+            />
+          </NFTContainer>
+        </>
+      ) : (
+        <NFTsNotFounds emptyText="Please connect your wallet to explore and manage your NFTs" />
+      )}
     </ContentPage >
   )
 }
@@ -99,4 +116,3 @@ const Title = styled(Typography)(({ theme }) => ({
   color: theme.palette.secondary.main,
   margin: '16px 0'
 }))
-

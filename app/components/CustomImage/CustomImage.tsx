@@ -4,14 +4,14 @@ import { styled } from "@mui/material"
 import Image from "next/image"
 
 interface CustomImageProps {
-  src: string
+  src?: string
   alt?: string
 }
 
 const CustomImage: React.FC<CustomImageProps> = ({ src, alt = 'image' }) => {
   return (
     <Image
-      src={src}
+      src={src ?? `/images/img-placeholder.png`}
       alt={alt}
       fill
       unoptimized
@@ -25,3 +25,4 @@ const ImageContainer = styled('div')({
   position: 'relative',
 
 })
+
